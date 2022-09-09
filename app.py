@@ -6,12 +6,6 @@ from transformers import logging
 from flask import Flask, jsonify, request
 
 logging.set_verbosity_error()
-device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-
-sent1 = "Bradd Crellin represented BARLA Cumbria on a tour of Australia with 6 other players representing Britain , " \
-        "also on a tour of Australia . "
-sent2 = 'Bradd Crellin also represented BARLA Great Britain on a tour through Australia on a tour through Australia ' \
-        'with 6 other players representing Cumbria . '
 
 config = {
     'model_name': 'roberta-base',
@@ -25,17 +19,14 @@ config = {
 }
 
 model_name = 'roberta-base'
-tokenizer = AutoTokenizer.from_pretrained(model_name)
-model_roberta = Classifier_Model.load_from_checkpoint('train/weights-50-epochs.ckpt', config=config)
-model_roberta.to(device)
-
-
 app = Flask(__name__)
 
 
-@app.post('/predict')
+@app.route('/predict', methods=['POST'])
 def predict():
-    data = request.json
+    print('request received')
+    data = request.get_json()
+
     try:
         s1 = data['s1']
         s2 = data['s2']
@@ -54,5 +45,16 @@ def predict():
     return result
 
 
+@app.route("/")
+def helloworld():
+    return "Hi!"
+
+
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', debug=True)
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    tokenizer = AutoTokenizer.from_pretrained(model_name)
+    model_roberta = Classifier_Model.load_from_checkpoint('train/weights-50-epochs.ckpt', config=config)
+    model_roberta.to(device)
+
+    app.run(host='0.0.0.0', port=8080,  debug=True)
+
