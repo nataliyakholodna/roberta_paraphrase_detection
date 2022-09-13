@@ -22,14 +22,11 @@ model_name = 'roberta-base'
 app = Flask(__name__)
 
 
-@app.route('/predict', methods=['POST'])
+@app.route('/predict', methods=['GET'])
 def predict():
-    print('request received')
-    data = request.get_json()
-
     try:
-        s1 = data['s1']
-        s2 = data['s2']
+        s1 = request.args.get('s1')
+        s2 = request.args.get('s2')
     except KeyError:
         return jsonify({'key': 'incorrect data'})
 
@@ -37,11 +34,13 @@ def predict():
                                            tokenizer,
                                            model_roberta,
                                            device)
+    print(proba, prediction)
     try:
-        result = jsonify({'probability': proba, 'prediction': prediction})
+        result = jsonify({'probability': float(proba),
+                          'prediction': int(prediction)})
 
     except TypeError as err:
-        return jsonify({'error': str(err)})
+        return jsonify({'error!!!': str(err)})
     return result
 
 
@@ -56,5 +55,5 @@ if __name__ == '__main__':
     model_roberta = Classifier_Model.load_from_checkpoint('train/weights-50-epochs.ckpt', config=config)
     model_roberta.to(device)
 
-    app.run(host='0.0.0.0', port=8080,  debug=True)
+    app.run(host='0.0.0.0')
 

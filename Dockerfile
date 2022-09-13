@@ -1,5 +1,5 @@
 # Base Image
-FROM python:3.10
+FROM python:3.9
 
 # Create working directory
 WORKDIR /paraph
