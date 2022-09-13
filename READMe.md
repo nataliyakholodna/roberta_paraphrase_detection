@@ -4,7 +4,7 @@ This app is used as supplementary component for [paraphrase detection](https://g
 It uses trained Roberta model, [PAWS](https://github.com/google-research-datasets/paws) dataset was used for its fine-tuning.
 Weights of the model have size of 1.5GB and are not uploaded to this repo. 
 
-App is based on Flask which allows to get model's prediction via GET-request.
+The app is based on Flask which allows to get model's prediction via GET-request.
 
 
 Start the server using Docker:
@@ -22,7 +22,7 @@ response = requests.get(url + '/predict',
 
 Where ```sentence_1```, ```sentence_2``` - not preprocessed strings.
 
-Note: size of the ```roberta_paraphrase:1.0``` container is 5.17GB.
+Note: size of the ```roberta_paraphrase:1.0``` image is 5.17GB.
 
 Example of the response:
 ```Python
@@ -39,7 +39,7 @@ Where ```probability``` is float-type value that denotes the probability of two 
 .
 ├── data    
     ├── dataset.py  # Contains user-defined PyTorch Dataset 
-    └── *.tsv   # Train/test/dev partinions with PAWS dataset
+    └── *.tsv   # Train/test/dev partitions with PAWS dataset
 ├── train
     ├── weights-50-epochs.ckpt # Weights of the model
     └── train.ipynb # Notebook for training the model                
