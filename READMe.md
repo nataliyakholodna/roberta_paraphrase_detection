@@ -50,3 +50,14 @@ Where ```probability``` is float-type value that denotes the probability of two 
 └── README.md
 
 ```
+
+### Libraries used
+```
+Flask
+numpy
+pandas
+pytorch_lightning
+torch
+transformers
+requests
+```
